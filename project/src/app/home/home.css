@@ -9,30 +9,6 @@ body {
   color: white;
 }
 
-/* NAVBAR */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 40px;
-  background: rgba(0, 0, 0, 0.7);
-  position: absolute;
-  width: 100%;
-}
-
-.logo {
-  color: #22c55e;
-}
-
-.nav-links a {
-  margin-left: 20px;
-  text-decoration: none;
-  color: white;
-  transition: 0.3s;
-}
-
-.nav-links a:hover {
-  color: #22c55e;
-}
 
 /* HERO */
 .hero {
@@ -81,12 +57,12 @@ body {
 }
 
 .primary {
-  background: #22c55e;
+  background: #2269c5;
   color: black;
 }
 
 .primary:hover {
-  background: #16a34a;
+  background: #0e4775;
 }
 
 .secondary {
