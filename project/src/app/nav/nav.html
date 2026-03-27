@@ -2,11 +2,11 @@
   <nav class="navbar">
     <h1 class="logo">StreetGarage</h1>
     <div class="nav-links">
-      <a routerLink="/">Home</a>
-      <a routerLink="/feed">Explore</a>
-      <a routerLink="">Quests</a>
-      <a routerLink="">Profile</a>
-      <a routerLink="/login">Log In</a>
+      <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/feed" routerLinkActive="active-link">Explore</a>
+      <!-- <a routerLink="" routerLinkActive="active-link">Quests</a>
+      <a routerLink="" routerLinkActive="active-link">Profile</a> -->
+      <a routerLink="/login" routerLinkActive="active-link"> Log In</a>
     </div>
   </nav>
 </header>
