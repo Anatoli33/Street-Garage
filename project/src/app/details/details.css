@@ -1,0 +1,113 @@
+.car-details {
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  min-height: 100vh;
+}
+
+/* container */
+.details-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1000px;
+  width: 100%;
+  background: #3b82f6;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+img{
+    width: 100%;
+}
+
+/* hover ефект */
+.image-box:hover img {
+  transform: scale(1.05);
+}
+
+/* info */
+.info-box {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.info-box h1 {
+  font-size: 28px;
+  color: #e5e7eb;
+  margin-bottom: 10px;
+}
+
+/* year */
+.year {
+  color: white;
+  margin-bottom: 15px;
+}
+
+.year strong {
+  color: white;
+}
+
+/* description */
+.description {
+  color: #d1d5db;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+/* actions */
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* button */
+.btn.back {
+  padding: 10px 16px;
+  background-color: orange;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+  box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+}
+
+.btn.back:hover {
+  transform: translateY(-2px);
+}
+
+/* not found */
+.not-found {
+  text-align: center;
+  padding: 80px 20px;
+  color:#1976d2;
+}
+
+.not-found h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.not-found p {
+  color: #1e88e5;
+}
+
+.back-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 16px;
+  background: #1e88e5;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.25s;
+}
+
+.back-btn:hover {
+  background: #1976d2;
+}
