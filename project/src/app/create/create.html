@@ -2,29 +2,29 @@
   <div class="form-container">
     <h1>Add New Car</h1>
 
-    <form>
+    <form [formGroup]="createForm" (ngSubmit)="onCreate()">
       <div class="form-group">
         <label for="brand">Brand</label>
-        <input type="text" id="brand" name="brand" placeholder="BMW, Audi..." required>
+        <input type="text" id="brand" formControlName="brand" placeholder="BMW, Audi...">
       </div>
 
       <div class="form-group">
         <label for="model">Model</label>
-        <input type="text" id="model" name="model" placeholder="M3, A4..." required>
+        <input type="text" id="model" formControlName="model" placeholder="M3, A4...">
       </div>
       <div class="form-group">
         <label for="year">Year</label>
-        <input type="number" id="year" name="year" placeholder="2020" required>
+        <input type="number" id="year" formControlName="year" placeholder="2020">
       </div>
 
       <div class="form-group">
         <label for="image">Image URL</label>
-        <input type="text" id="image" name="image" placeholder="https://..." required>
+        <input type="text" id="image" formControlName="image" placeholder="https://...">
       </div>
 
       <div class="form-group">
         <label for="description">Description</label>
-        <textarea id="description" name="description" rows="4" placeholder="Car details..." required></textarea>
+        <textarea id="description" formControlName="description" rows="4" placeholder="Car details..."></textarea>
       </div>
 
 
