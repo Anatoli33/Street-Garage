@@ -1,14 +1,13 @@
 <div class="feed">
   <a routerLink="/create" class="post-btn">Post Your Car</a>
-  <h1>Here see the cars</h1>
 
   @if (cars().length === 0) {
-    <p>No cars yet...</p>
+    <h1>No cars yet 🚗...</h1>
   }
 
   @for (car of cars(); track car.id) {
+    <h1>Here see the cars</h1>
     <div class="car-card">
-      
       <img [src]="car.image" alt="car image" class="car-img" />
 
       <h2>{{ car.brand }} {{ car.model }}</h2>
@@ -19,7 +18,6 @@
       <!-- <a [routerLink]="['/feed', car.id]" class="details-btn">
         View Details
       </a> -->
-
     </div>
   }
 </div>

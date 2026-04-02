@@ -6,10 +6,9 @@ import { getCars } from '../services/cars';
   selector: 'app-feed',
   imports: [RouterLink],
   templateUrl: './feed.html',
-  styleUrls: ['./feed.css'],
+  styleUrl: './feed.css',
 })
 export class Feed {
-
   cars = signal<any[]>([]);
   isLoading = signal(true);
 
