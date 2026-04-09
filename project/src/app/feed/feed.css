@@ -31,6 +31,7 @@ a{
   font-size: 14px;
   letter-spacing: 0.5px;
   transition: all 0.25s ease;
+  cursor: pointer;
 }
 .details-btn:hover{
   background-color: #e0e7ff;
