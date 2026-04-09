@@ -7,8 +7,8 @@
       <a routerLink="/answers" routerLinkActive="active-link">Q&A</a>
       <!-- <a routerLink="" routerLinkActive="active-link">Profile</a> -->
   @if (!authService.currentUser()) {
-    <a routerLink="/login">Login</a>
-    <a routerLink="/register">Register</a>
+    <a routerLink="/login" routerLinkActive="active-link">Login</a>
+    <a routerLink="/register" routerLinkActive="active-link">Register</a>
   }
   @if (authService.currentUser()) {
     <a (click)="logout()" style="cursor: pointer;">Logout</a>
