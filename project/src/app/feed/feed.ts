@@ -1,10 +1,11 @@
 import { RouterLink } from '@angular/router';
 import { Component, signal } from '@angular/core';
 import { getCars } from '../services/cars';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-feed',
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe],
   templateUrl: './feed.html',
   styleUrl: './feed.css',
 })

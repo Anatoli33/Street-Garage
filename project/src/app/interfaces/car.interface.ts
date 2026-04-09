@@ -4,5 +4,7 @@ export interface Car{
     model: string,
     year: number,
     description: string,
-    image: string
+    image: string,
+    tags?: string;
+    createdAt: Date | any; 
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { addCar } from '../services/cars.js';
+import { Car } from '../interfaces/car.interface'; // Make sure your interface is imported
 
 @Component({
   selector: 'app-create',
@@ -10,6 +11,7 @@ import { addCar } from '../services/cars.js';
 })
 export class Create {
   createForm: FormGroup;
+  currentYear = new Date().getFullYear();
 
   constructor(private fb: FormBuilder) {
     this.createForm = this.fb.group({
@@ -17,10 +19,11 @@ export class Create {
       model: ['', [Validators.required, Validators.minLength(1)]],
       year: [
         '',
-        [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())],
+        [Validators.required, Validators.min(1900), Validators.max(this.currentYear)],
       ],
       image: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
+      tags: [''], // Optional field for comma-separated tags
     });
   }
 
@@ -30,7 +33,20 @@ export class Create {
       return;
     }
 
-    const carData = this.createForm.value;
+    // Prepare car data
+    const formValue = this.createForm.value;
+
+    const carData: Car = {
+      brand: formValue.brand.trim(),
+      model: formValue.model.trim(),
+      year: formValue.year,
+      image: formValue.image.trim(),
+      description: formValue.description.trim(),
+      tags: formValue.tags
+        ? formValue.tags.split(',').map((t: string) => t.trim())
+        : [],
+      createdAt: new Date(),
+    };
 
     try {
       await addCar(carData);

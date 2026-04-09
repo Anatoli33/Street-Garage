@@ -26,7 +26,15 @@
         <label for="description">Description</label>
         <textarea id="description" formControlName="description" rows="4" placeholder="Car details..."></textarea>
       </div>
-
+       <div class="form-group">
+        <label for="tags">Tags</label>
+        <input
+          type="text"
+          id="tags"
+          formControlName="tags"
+          placeholder="e.g., sports, electric, luxury"
+        />
+      </div>
 
       <button type="submit" class="btn-submit">Create Car</button>
     </form>
