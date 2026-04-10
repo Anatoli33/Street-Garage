@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { getCarById, updateCar } from '../services/cars';
 import { FormsModule } from '@angular/forms';
 import { Car } from '../interfaces/car.interface';
-import { log } from 'firebase/firestore/pipelines';
+
 
 @Component({
   selector: 'app-edit-car',

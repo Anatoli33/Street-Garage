@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { addCar } from '../services/cars.js';
-import { Car } from '../interfaces/car.interface'; // Make sure your interface is imported
+import { Car } from '../interfaces/car.interface'; 
 
 @Component({
   selector: 'app-create',
@@ -23,7 +23,7 @@ export class Create {
       ],
       image: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      tags: [''], // Optional field for comma-separated tags
+      tags: [''], 
     });
   }
 
@@ -33,7 +33,6 @@ export class Create {
       return;
     }
 
-    // Prepare car data
     const formValue = this.createForm.value;
 
     const carData: Car = {
