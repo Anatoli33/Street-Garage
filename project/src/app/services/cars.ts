@@ -3,6 +3,7 @@ import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { app } from "./firebase";
 import { Car } from "../interfaces/car.interface.js";
 import { getDocs } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const db = getFirestore(app);
 
@@ -25,4 +26,34 @@ export async function addCar(car: Car) {
     console.error("Error adding car:", error);
     throw error; // за да може компонентът да хване грешката
   }
+}
+
+export async function getCarById(id: string): Promise<Car | null> {
+  const docRef = doc(db, "cars", id);
+  const docSnap = await getDoc(docRef);
+
+  if (!docSnap.exists()) {
+    return null;
+  }
+
+  const data = docSnap.data();
+
+  return {
+    id: docSnap.id,
+    ...data,
+    createdAt: data['createdAt']?.toDate?.() ?? new Date()
+  } as Car;
+}
+
+export async function updateCar(id: string, data: Partial<Car>) {
+  const docRef = doc(db, "cars", id);
+
+  await updateDoc(docRef, {
+    brand: data.brand,
+    model: data.model,
+    year: data.year,
+    description: data.description,
+    image: data.image,
+    tags: data.tags
+  });
 }

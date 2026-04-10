@@ -11,6 +11,7 @@ import { Questions } from './questions/questions';
 import { Answers } from './answers/answers';
 import { guestGuard } from './guards/auth.guard.js';
 import { authGuard } from './guards/auth.guard.js';
+import { EditCarComponent } from './edit/edit.js';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -24,6 +25,10 @@ export const routes: Routes = [
   
   { path: 'create', component: Create, canActivate: [authGuard] },
   { path: 'questions', component: Questions, canActivate: [authGuard] },
+  {
+  path: 'cars/:id/edit',
+  component: EditCarComponent
+  },
 
   { path: '**', component: NotFound },
 ];

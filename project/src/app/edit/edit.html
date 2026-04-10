@@ -1,1 +1,14 @@
-<p>edit works!</p>
+
+
+<form  (ngSubmit)="onSubmit()">
+  <input [value]="car.brand" />
+  <input [(ngModel)]="car.model" name="model" placeholder="Model" />
+  <input [(ngModel)]="car.year" name="year" type="number" placeholder="Year" />
+  <input [(ngModel)]="car.image" name="image" placeholder="Image URL" />
+
+  <textarea [(ngModel)]="car.description" name="description" placeholder="Description"></textarea>
+
+  <input [(ngModel)]="car.tags" name="tags" placeholder="Tags (drift, turbo...)" />
+
+  <button>Edit Car</button>
+</form>
