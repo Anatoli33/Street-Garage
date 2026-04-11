@@ -4,6 +4,7 @@ import { app } from "./firebase";
 import { Car } from "../interfaces/car.interface.js";
 import { getDocs } from "firebase/firestore";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc } from "firebase/firestore";
 
 const db = getFirestore(app);
 
@@ -56,4 +57,8 @@ export async function updateCar(id: string, data: Partial<Car>) {
     image: data.image,
     tags: data.tags
   });
+}
+export async function deleteCar(id: string) {
+  const carRef = doc(db, "cars", id);
+  await deleteDoc(carRef);
 }

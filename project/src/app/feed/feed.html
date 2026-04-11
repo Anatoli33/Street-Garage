@@ -34,11 +34,10 @@
       </div>
 
       <div class="buttons">
-        <a [routerLink]="['/cars', car.id, 'edit']">Edit</a>
         <a class="details-btn">Like ❤️</a>
         <a class="details-btn">Comment 💬</a>
-        <a class="details-btn">Edit ✏️</a>
-        <a class="details-btn">Delete 🗑️</a>
+        <a [routerLink]="['/cars', car.id, 'edit']">Edit ✏️</a>
+        <a class="details-btn" (click)="onDelete(car.id)">Delete 🗑️</a>
       </div>
     </div>
   }
