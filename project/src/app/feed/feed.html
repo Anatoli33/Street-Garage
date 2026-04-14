@@ -34,7 +34,9 @@
       </div>
 
       <div class="buttons">
-        <a class="details-btn">Like ❤️</a>
+        <a class="details-btn" (click)="onLike(car.id)">
+        Like❤️ {{ car.likes || 0 }}
+        </a>
         <a class="details-btn">Comment 💬</a>
         <a [routerLink]="['/cars', car.id, 'edit']">Edit ✏️</a>
         <a class="details-btn" (click)="onDelete(car.id)">Delete 🗑️</a>

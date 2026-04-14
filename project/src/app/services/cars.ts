@@ -5,6 +5,7 @@ import { Car } from "../interfaces/car.interface.js";
 import { getDocs } from "firebase/firestore";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { deleteDoc } from "firebase/firestore";
+import { increment } from "firebase/firestore";
 
 const db = getFirestore(app);
 
@@ -61,4 +62,11 @@ export async function updateCar(id: string, data: Partial<Car>) {
 export async function deleteCar(id: string) {
   const carRef = doc(db, "cars", id);
   await deleteDoc(carRef);
+}
+export async function likeCar(carId: string) {
+  const carRef = doc(db, "cars", carId);
+
+  await updateDoc(carRef, {
+    likes: increment(1)
+  });
 }
