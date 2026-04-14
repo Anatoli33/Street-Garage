@@ -3,6 +3,7 @@ import { deleteQuestion, getQuestions } from '../services/questions.js';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Question } from '../interfaces/questions.interface.js';
 import { RouterModule } from '@angular/router';
+import { likeQuestion } from '../services/questions.js';
 
 @Component({
   selector: 'app-answers',
@@ -40,4 +41,15 @@ export class Answers implements OnInit {
     
     this.questions.update(questions => questions.filter(q => q.id !== id));
   }
+async onLike(questionId: string) {
+  this.questions.update(questions =>
+    questions.map(question =>
+      question.id === questionId
+        ? { ...question, likes: (question.likes || 0) + 1 }
+        : question
+    )
+  );
+
+  await likeQuestion(questionId);
+}
 }

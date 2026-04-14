@@ -1,9 +1,9 @@
-// services/questions.js
 import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 import { app } from "./firebase";
 import { Question } from "../interfaces/questions.interface.js";
 import { serverTimestamp } from "firebase/firestore";
 import { doc, deleteDoc } from "firebase/firestore";
+import { updateDoc, increment } from "firebase/firestore";
 
 const db = getFirestore(app);
 export async function getQuestions(): Promise<Question[]> {
@@ -19,6 +19,7 @@ export async function getQuestions(): Promise<Question[]> {
       description: data.description,
       tags: data.tags,
       createdAt: data.createdAt?.toDate?.() ?? new Date(),
+      likes: data.likes ?? 0,
     };
   });
 }
@@ -41,4 +42,11 @@ export async function addQuestion(question: Question) {
 export async function deleteQuestion(id: string) {
   const questionRef = doc(db, "questions", id);
   await deleteDoc(questionRef);
+}
+export async function likeQuestion(questionId: string) {
+  const questionRef = doc(db, "questions", questionId);
+
+  await updateDoc(questionRef, {
+    likes: increment(1)
+  });
 }

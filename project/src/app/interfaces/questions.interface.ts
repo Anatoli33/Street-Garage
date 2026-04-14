@@ -4,4 +4,5 @@ export interface Question {
   description: string;
   tags?: string;
   createdAt: Date | any; 
+  likes: number;
 }
