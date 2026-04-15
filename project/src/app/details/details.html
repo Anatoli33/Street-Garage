@@ -52,7 +52,7 @@
   <h2>Comments</h2>
 
 
-
+        @if (authService.currentUser()) {
     <div class="add-comment">
       <textarea
         [(ngModel)]="commentText"
@@ -63,7 +63,7 @@
         Post
       </button>
     </div>
-
+  }
 
 
   @for (comment of comments(); track comment.id) {

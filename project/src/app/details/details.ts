@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { getCarById } from '../services/cars';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { onSnapshot } from 'firebase/firestore';
 
 import {
   collection,
@@ -13,6 +14,7 @@ import {
 } from 'firebase/firestore';
 
 import { db } from '../services/firestore.js';
+import { AuthService } from '../services/auth.service.js';
 
 @Component({
   selector: 'app-car-details',
@@ -22,14 +24,17 @@ import { db } from '../services/firestore.js';
   styleUrl: './details.css',
 })
 export class CarDetails implements OnInit {
-  car = signal<any>(null);
 
+  car = signal<any>(null);
   carId: string = '';
 
   commentText = '';
   comments = signal<any[]>([]);
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    public authService: AuthService
+  ) {}
 
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -40,43 +45,39 @@ export class CarDetails implements OnInit {
       const data = await getCarById(id);
       this.car.set(data);
 
-      await this.loadComments(id);
+      this.loadComments(id); // ✅ без await
     }
   }
 
-  async loadComments(carId: string) {
+  loadComments(carId: string) {
     const q = query(
       collection(db, `cars/${carId}/comments`),
       orderBy('createdAt', 'desc')
     );
 
-    const snapshot = await getDocs(q);
-
-    this.comments.set(
-      snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }))
-    );
+    onSnapshot(q, (snapshot) => {
+      this.comments.set(
+        snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }))
+      );
+    });
   }
 
   async addComment() {
     if (!this.commentText.trim()) return;
 
-  
-    const user = {
-      uid: 'test123',
-      displayName: 'Tomi'
-    };
+    const user = this.authService.currentUser();
+    if (!user) return;
 
     await addDoc(collection(db, `cars/${this.carId}/comments`), {
       text: this.commentText,
       userId: user.uid,
-      username: user.displayName,
+      username: user.displayName || user.email,
       createdAt: new Date()
     });
 
-    this.commentText = '';
-    await this.loadComments(this.carId);
+    this.commentText = ''; // ✅ това е достатъчно
   }
 }

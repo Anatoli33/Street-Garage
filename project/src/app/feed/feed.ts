@@ -4,6 +4,7 @@ import { getCars } from '../services/cars';
 import { DatePipe } from '@angular/common';
 import { deleteCar } from '../services/cars';
 import { likeCar } from '../services/cars';
+import { AuthService } from '../services/auth.service.js';
 
 @Component({
   selector: 'app-feed',
@@ -12,6 +13,10 @@ import { likeCar } from '../services/cars';
   styleUrl: './feed.css',
 })
 export class Feed {
+  constructor(
+    public authService: AuthService,
+  ) {}
+
   cars = signal<any[]>([]);
   isLoading = signal(true);
 
