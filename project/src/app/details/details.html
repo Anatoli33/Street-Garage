@@ -2,12 +2,12 @@
   <div class="details-container">
     <div class="details-card">
 
-      <!-- IMAGE -->
+
       <div class="image-section">
         <img [src]="c.image" alt="car image" />
       </div>
 
-      <!-- INFO -->
+
       <div class="info-section">
         <h1>{{ c.brand }} {{ c.model }}</h1>
 
@@ -27,7 +27,7 @@
           {{ c.description }}
         </p>
 
-        <!-- TAGS -->
+
         @if (c.tags) {
           <div class="tags">
             @for (tag of c.tags.split ? c.tags.split(',') : c.tags; track $index) {
@@ -36,7 +36,7 @@
           </div>
         }
 
-        <!-- BUTTONS -->
+
         <div class="actions">
           <button class="btn like">
             ❤️ Like {{ c.likes || 0 }}
@@ -46,6 +46,42 @@
             ⬅ Back
           </a>
         </div>
+
+<div class="comments-section">
+
+  <h2>Comments</h2>
+
+
+
+    <div class="add-comment">
+      <textarea
+        [(ngModel)]="commentText"
+        placeholder="Write a comment..."
+      ></textarea>
+
+      <button (click)="addComment()" class="btn comment-btn">
+        Post
+      </button>
+    </div>
+
+
+
+  @for (comment of comments(); track comment.id) {
+    <div class="comment-box">
+      <div class="comment-header">
+        <span class="username">{{ comment.username }}</span>
+        <span class="date">
+          {{ comment.createdAt | date: 'short' }}
+        </span>
+      </div>
+
+      <p class="comment-text">
+        {{ comment.text }}
+      </p>
+    </div>
+  }
+
+</div>
 
       </div>
     </div>

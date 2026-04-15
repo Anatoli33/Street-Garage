@@ -1,34 +1,37 @@
+/* CONTAINER */
 .details-container {
   display: flex;
   justify-content: center;
   padding: 40px 20px;
+  margin-top: 80px;
   font-family: Arial, Helvetica, sans-serif;
-  margin: 80px auto;
 }
 
+/* CARD */
 .details-card {
   display: flex;
-  flex-direction: row;
   gap: 30px;
   background: #3b82f6;
   color: white;
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 20px;
   max-width: 900px;
   width: 100%;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
 }
 
-/* IMAGE */
+/* IMAGE SECTION */
 .image-section {
   flex: 1;
+  max-width: 350px;
 }
 
 .image-section img {
   width: 100%;
-  border-radius: 12px;
-  object-fit: cover;
-  max-height: 350px;
+  height: 100%;
+  max-height: 280px;
+  object-fit: cover; /* 🔥 важно - оправя снимките */
+  border-radius: 14px;
 }
 
 /* INFO */
@@ -36,11 +39,12 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
 }
 
+/* TITLE */
 h1 {
-  font-size: 28px;
+  font-size: 26px;
   margin: 0;
 }
 
@@ -55,7 +59,7 @@ h1 {
 /* DESCRIPTION */
 .description {
   font-size: 15px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* TAGS */
@@ -68,59 +72,110 @@ h1 {
 .tag {
   background: white;
   color: #1e40af;
-  padding: 4px 10px;
-  border-radius: 16px;
-  font-size: 0.85rem;
+  padding: 5px 10px;
+  border-radius: 14px;
+  font-size: 13px;
   font-weight: 500;
-  transition: 0.2s;
-}
-
-.tag:hover {
-  background: #e2e8f0;
-  cursor: pointer;
 }
 
 /* BUTTONS */
 .actions {
   display: flex;
   gap: 10px;
-  margin-top: auto;
   flex-wrap: wrap;
 }
 
 .btn {
-  display: inline-block;
   padding: 10px 14px;
   border-radius: 10px;
+  border: none;
   background: white;
   color: #2563eb;
-  text-decoration: none;
   font-weight: 600;
-  font-size: 14px;
   cursor: pointer;
-  transition: all 0.25s ease;
-  border: none;
+  transition: 0.2s;
 }
 
 .btn:hover {
-  background: #e0e7ff;
+  background: #dbeafe;
 }
 
+/* LIKE */
 .like {
   color: #dc2626;
 }
 
-.back {
-  color: #2563eb;
+/* ================= COMMENTS ================= */
+
+.comments-section {
+  margin-top: 30px;
 }
 
-/* RESPONSIVE */
+/* TEXTAREA */
+.add-comment textarea {
+  width: 90%;
+  height: 80px;
+  padding: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: #dbeafe;
+  color: #1e3a8a;
+  margin-bottom: 10px;
+}
+
+/* BUTTON */
+.comment-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.comment-btn:hover {
+  background: #1e40af;
+}
+
+/* COMMENT CARD */
+.comment-box {
+  background: #1e3a8a;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 12px;
+  
+}
+
+/* HEADER */
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+/* USERNAME */
+.username {
+  color: #93c5fd;
+  font-weight: bold;
+}
+
+/* TEXT */
+.comment-text {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 768px) {
   .details-card {
     flex-direction: column;
   }
 
+  .image-section {
+    max-width: 100%;
+  }
+
   .image-section img {
-    max-height: 250px;
+    max-height: 220px;
   }
 }
