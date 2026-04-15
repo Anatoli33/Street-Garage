@@ -11,6 +11,7 @@
     <a routerLink="/register" routerLinkActive="active-link">Register</a>
   }
   @if (authService.currentUser()) {
+    <a routerLink="/profile" routerLinkActive="active-link">Profile</a>
     <a (click)="logout()" style="cursor: pointer;">Logout</a>
   }
 

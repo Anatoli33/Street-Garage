@@ -12,6 +12,7 @@ import { Answers } from './answers/answers';
 import { guestGuard } from './guards/auth.guard.js';
 import { authGuard } from './guards/auth.guard.js';
 import { EditCarComponent } from './edit/edit.js';
+import { Profile } from './profile/profile';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -25,7 +26,7 @@ export const routes: Routes = [
   path: 'questions/:id',
   loadComponent: () =>
     import('./details-answers/details-answers')
-      .then(m => m.DetailsAnswersComponent)
+  .then(m => m.DetailsAnswersComponent)
   },
 
   
@@ -35,6 +36,7 @@ export const routes: Routes = [
   
   { path: 'create', component: Create, canActivate: [authGuard] },
   { path: 'questions', component: Questions, canActivate: [authGuard] },
+  { path: 'profile', component: Profile, canActivate: [authGuard] },
   {
   path: 'cars/:id/edit',
   component: EditCarComponent

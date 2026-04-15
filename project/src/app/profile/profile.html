@@ -1,0 +1,58 @@
+<div class="profile">
+
+  <!-- HEADER -->
+  <div class="header">
+    <img [src]="user.avatar" class="avatar" />
+    <h2>@{{ user.username }}</h2>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button (click)="setTab('cars')" [class.active]="selectedTab() === 'cars'">
+      Cars
+    </button>
+
+    <button (click)="setTab('questions')" [class.active]="selectedTab() === 'questions'">
+      Questions
+    </button>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- 🚗 CARS -->
+    @if (selectedTab() === 'cars') {
+      @for (car of cars(); track car.id) {
+        <div class="card">
+          <h3>{{ car.model }}</h3>
+          <p>{{ car.description }}</p>
+          <span>❤️ {{ car.likes }}</span>
+
+          <!-- owner check demo -->
+          @if (car.ownerId === user.id) {
+            <button>Edit</button>
+            <button>Delete</button>
+          }
+        </div>
+      }
+    }
+
+    <!-- ❓ QUESTIONS -->
+    @if (selectedTab() === 'questions') {
+      @for (q of questions(); track q.id) {
+        <div class="card">
+          <h3>{{ q.title }}</h3>
+          <p>{{ q.description }}</p>
+          <span>❤️ {{ q.likes }}</span>
+
+          @if (q.ownerId === user.id) {
+            <button>Edit</button>
+            <button>Delete</button>
+          }
+        </div>
+      }
+    }
+
+  </div>
+
+</div>

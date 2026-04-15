@@ -1,4 +1,3 @@
-// services/cars.js
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { app } from "./firebase";
 import { Car } from "../interfaces/car.interface.js";
