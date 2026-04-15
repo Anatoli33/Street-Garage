@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 type Tab = 'cars' | 'questions';
 
@@ -7,14 +8,12 @@ type Tab = 'cars' | 'questions';
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
-export class Profile {
+export class Profile implements OnInit {
 
-  user = {
-    id: 'user123',
-    username: 'toli_dev',
-    avatar: 'https://i.pravatar.cc/150?img=12'
-  };
+  auth = getAuth();
 
+  // 🔥 user from firebase (NOT hardcoded)
+  user = signal<any>(null);
 
   selectedTab = signal<Tab>('cars');
 
@@ -24,13 +23,6 @@ export class Profile {
       model: 'VW Golf 5',
       description: '1.6 FSI clean build',
       likes: 10,
-      ownerId: 'user123'
-    },
-    {
-      id: '2',
-      model: 'BMW F10',
-      description: 'Stage 1 pops & bangs',
-      likes: 25,
       ownerId: 'user123'
     }
   ]);
@@ -44,6 +36,21 @@ export class Profile {
       ownerId: 'user123'
     }
   ]);
+
+  ngOnInit() {
+    // 🔥 listen for auth changes
+    onAuthStateChanged(this.auth, (firebaseUser) => {
+      if (firebaseUser) {
+        this.user.set({
+          id: firebaseUser.uid,
+          username: firebaseUser.displayName || firebaseUser.email,
+          avatar: firebaseUser.photoURL || 'https://i.pravatar.cc/150'
+        });
+      } else {
+        this.user.set(null);
+      }
+    });
+  }
 
   setTab(tab: Tab) {
     this.selectedTab.set(tab);
