@@ -62,10 +62,10 @@ export async function deleteCar(id: string) {
   const carRef = doc(db, "cars", id);
   await deleteDoc(carRef);
 }
-export async function likeCar(carId: string) {
-  const carRef = doc(db, "cars", carId);
+export async function likeCar(carId: string, isLiked: boolean) {
+  const ref = doc(db, "cars", carId);
 
-  await updateDoc(carRef, {
-    likes: increment(1)
+  await updateDoc(ref, {
+    likes: increment(isLiked ? -1 : 1)
   });
 }
