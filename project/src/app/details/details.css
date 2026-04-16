@@ -159,6 +159,15 @@ h1 {
   color: white;
   align-self: flex-end;
 }
+.login-prompt {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
 
 /* COMMENT BOXES */
 .comment-box {

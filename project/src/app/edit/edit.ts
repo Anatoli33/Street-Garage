@@ -1,12 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { getCarById, updateCar } from '../services/cars';
 import { FormsModule } from '@angular/forms';
 import { Car } from '../interfaces/car.interface';
 
+
 @Component({
   selector: 'app-edit-car',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterModule],
   templateUrl: './edit.html',
   styleUrl: './edit.css',
 })

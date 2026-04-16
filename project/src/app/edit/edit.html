@@ -1,15 +1,76 @@
-<form (ngSubmit)="onSubmit()">
-  <input [(ngModel)]="car.brand" name="brand" placeholder="Brand" />
-  
-  <input [(ngModel)]="car.model" name="model" placeholder="Model" />
-  
-  <input [(ngModel)]="car.year" name="year" type="number" placeholder="Year" />
-  
-  <input [(ngModel)]="car.image" name="image" placeholder="Image URL" />
+<div class="details-container">
+  <div class="details-card">
+    <div class="info-section">
+      <h1>Edit Car</h1>
 
-  <textarea [(ngModel)]="car.description" name="description" rows="6" placeholder="Description"></textarea>
+      <form (ngSubmit)="onSubmit()" class="edit-form">
+        
+        <div class="input-group">
+          <label>Brand</label>
+          <input 
+            [(ngModel)]="car.brand" 
+            name="brand" 
+            placeholder="e.g. BMW, Audi..." 
+            required 
+          />
+        </div>
 
-  <input [(ngModel)]="car.tags" name="tags" placeholder="Tags" />
+        <div class="input-group">
+          <label>Model</label>
+          <input 
+            [(ngModel)]="car.model" 
+            name="model" 
+            placeholder="e.g. M5, RS6..." 
+            required 
+          />
+        </div>
 
-  <button type="submit">Edit Car</button>
-</form>
+        <div class="input-group">
+          <label>Year</label>
+          <input 
+            [(ngModel)]="car.year" 
+            name="year" 
+            type="number" 
+            placeholder="Year of production" 
+            required 
+          />
+        </div>
+
+        <div class="input-group">
+          <label>Image URL</label>
+          <input 
+            [(ngModel)]="car.image" 
+            name="image" 
+            placeholder="https://image-url.com/car.jpg" 
+          />
+        </div>
+
+        <div class="input-group">
+          <label>Description</label>
+          <textarea 
+            [(ngModel)]="car.description" 
+            name="description" 
+            rows="6" 
+            placeholder="Tell us more about the car..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="input-group">
+          <label>Tags (optional)</label>
+          <input 
+            [(ngModel)]="car.tags" 
+            name="tags" 
+            placeholder="e.g. fast, electric, drift" 
+          />
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn save-btn">Edit Car</button>
+          <a class="btn back" [routerLink]="['/feed']">Cancel</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
