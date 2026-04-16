@@ -1,27 +1,52 @@
-# 🚗 Street Garage App
+# 🚗 Street Garage
 
-My SoftUni Angular Course Project
-Street Garage is a modern web application where users can **share cars**, **ask questions**, and interact with a community of car enthusiasts.
+A modern Angular web application where car enthusiasts can **share vehicles, ask questions, and interact with a growing community**.
+
+Built as part of a SoftUni course project, but structured with real-world development practices in mind.
+
+---
+
+## 🌐 Live Concept
+
+Street Garage simulates a real automotive community platform where users can:
+
+* Showcase their cars
+* Ask for help or advice
+* Explore content from other users
 
 ---
 
 ## ✨ Features
 
-* 🚘 Post your own cars with images, description, and tags
-* ❓ Ask and browse automotive questions (Q&A section)
-* 🗑️ Delete your own posts/questions
-* 🏷️ Tag system for better categorization
-* 📅 Automatic timestamps for posts
-* ⚡ Fast and reactive UI using Angular Signals
+### 🚘 Cars
+
+* Create and publish car posts
+* Upload images and descriptions
+* Add tags for better discoverability
+* Automatic timestamps
+
+### ❓ Q&A Section
+
+* Ask automotive-related questions
+* Browse community questions
+* Clean and simple UI for readability
+
+### ⚙️ Core Functionality
+
+* Delete your own content
+* Reactive UI using Angular Signals
+* Structured Firebase integration
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** Angular (Standalone Components + Signals)
-* **Backend / Database:** Firebase Firestore
-* **Authentication:** Firebase Auth *(optional / future upgrade)*
-* **Styling:** CSS
+| Layer    | Technology                     |
+| -------- | ------------------------------ |
+| Frontend | Angular (Standalone + Signals) |
+| Backend  | Firebase Firestore             |
+| Auth     | Firebase Auth *(planned)*      |
+| Styling  | CSS                            |
 
 ---
 
@@ -30,10 +55,10 @@ Street Garage is a modern web application where users can **share cars**, **ask 
 ```
 src/
  ├── app/
- │   ├── services/        # Firebase logic (CRUD operations)
- │   ├── interfaces/      # TypeScript interfaces
- │   ├── components/      # UI components
- │   └── pages/           # Main pages (Feed, Q&A, etc.)
+ │   ├── components/   # Reusable UI components
+ │   ├── pages/        # Feature pages (Feed, Q&A, etc.)
+ │   ├── services/     # Firebase logic & data handling
+ │   ├── interfaces/   # TypeScript models
 ```
 
 ---
@@ -42,41 +67,26 @@ src/
 
 ### 1. Clone the repository
 
-```
+```bash
 git clone https://github.com/Anatoli33/Car-Forum
 cd project
 ```
 
----
-
 ### 2. Install dependencies
 
-```
+```bash
 npm install
 ```
 
----
 
-### 3. Setup Firebase
 
-1. Go to Firebase Console
-2. Create a project
-3. Enable Firestore Database
-4. Copy your config and replace it in:
+### 3. Run the application
 
-```
-services/firebase.js
-```
-
----
-
-### 4. Run the app
-
-```
+```bash
 ng serve
 ```
 
-Open in browser:
+Open:
 
 ```
 http://localhost:4200
@@ -84,11 +94,11 @@ http://localhost:4200
 
 ---
 
-## 🔥 Firestore Structure
+## 🔥 Database Structure
 
-### `cars`
+### cars
 
-```
+```ts
 {
   id: string
   brand: string
@@ -101,9 +111,9 @@ http://localhost:4200
 }
 ```
 
-### `questions`
+### questions
 
-```
+```ts
 {
   id: string
   title: string
@@ -117,41 +127,53 @@ http://localhost:4200
 
 ## 🔒 Future Improvements
 
-* 🔐 User authentication (login/register)
-* ❤️ Like system
-* 💬 Comments on cars and questions
+* 🔐 Authentication (login/register)
+* ❤️ Like system with real-time updates
+* 💬 Comments (cars & questions)
 * 🧑‍🔧 User profiles
-* 📱 Responsive mobile design
-* ⚡ Real-time updates with Firestore listeners
+* 📱 Fully responsive design
+* ⚡ Firestore real-time listeners
+* 🔎 Search & filtering
 
 ---
 
 ## 🧠 What I Learned
 
-* Working with Angular Signals
-* Structuring scalable frontend apps
-* Integrating Firebase Firestore
-* Handling async data and UI updates
-* Building real-world CRUD applications
+* Building scalable Angular applications
+* Using Angular Signals for reactive state
+* Structuring frontend architecture
+* Working with Firebase Firestore
+* Managing async data and UI updates
+
+---
+
+## 📌 Project Status
+
+🟡 In development – actively improving structure, features, and performance.
 
 ---
 
 ## 🤝 Contributing
 
-Pull requests are welcome. For major changes, please open an issue first.
+Contributions are welcome.
+
+If you have ideas or improvements:
+
+* Open an issue
+* Submit a pull request
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+MIT License
 
 ---
 
 ## 👨‍💻 Author
 
-Created by **Anatoli Hadzhiev**
+**Anatoli Hadzhiev**
 
 ---
 
-⭐ If you like this project, consider giving it a star!
+⭐ If you find this project useful, consider giving it a star!
