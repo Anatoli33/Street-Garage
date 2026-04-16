@@ -7,4 +7,5 @@ export interface Car{
     image: string,
     tags?: string;
     createdAt: Date | any; 
+    ownerId?: string;
 }

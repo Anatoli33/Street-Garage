@@ -39,10 +39,10 @@
         <a [routerLink]="['/cars', car.id]" class="details-btn">
         Details 👀
         </a>
-        @if (authService.currentUser()) {
-        <a [routerLink]="['/cars', car.id, 'edit']">Edit ✏️</a>
-        <a class="details-btn" (click)="onDelete(car.id)">Delete 🗑️</a>
-        }
+@if (authService.currentUser()?.uid === car.ownerId) {
+  <a [routerLink]="['/cars', car.id, 'edit']">Edit ✏️</a>
+  <a class="details-btn" (click)="onDelete(car.id!)">Delete 🗑️</a>
+}
       </div>
     </div>
   }

@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core'; 
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { addQuestion } from '../services/questions.js';
-import { AuthService } from '../services/auth.service.js'; 
-import { Router } from '@angular/router'; 
+import { AuthService } from '../services/auth.service.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-questions',
@@ -46,8 +46,8 @@ export class Questions {
       description: formValue.description.trim(),
       tags: formValue.tags || '',
       createdAt: new Date(),
-      likes: 0, 
-      ownerId: user.uid, 
+      likes: 0,
+      ownerId: user.uid,
     };
 
     try {
@@ -55,7 +55,7 @@ export class Questions {
       console.log('Question added with owner:', user.uid);
       this.questionForm.reset();
       alert('Question posted successfully!');
-      this.router.navigate(['/answers']); 
+      this.router.navigate(['/answers']);
     } catch (err) {
       console.error('Error adding question:', err);
       alert('Failed to post question.');
