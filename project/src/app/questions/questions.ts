@@ -46,7 +46,7 @@ export class Questions {
       description: formValue.description.trim(),
       tags: formValue.tags || '',
       createdAt: new Date(),
-      likes: 0,
+      likes: [],
       ownerId: user.uid,
     };
 

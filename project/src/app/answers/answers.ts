@@ -1,22 +1,21 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { deleteQuestion, getQuestions } from '../services/questions.js';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Question } from '../interfaces/questions.interface.js';
 import { RouterModule } from '@angular/router';
 import { likeQuestion } from '../services/questions.js';
-import { AuthService } from '../services/auth.service.js'; 
+import { AuthService } from '../services/auth.service.js';
 
 @Component({
   selector: 'app-answers',
   standalone: true,
-  imports: [DatePipe, CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './answers.html',
   styleUrl: './answers.css',
 })
 export class Answers implements OnInit {
+  public authService = inject(AuthService);
 
-  public authService = inject(AuthService); 
-  
   questions = signal<Question[]>([]);
   isLoading = signal(true);
   error = signal<string | null>(null);
@@ -28,7 +27,15 @@ export class Answers implements OnInit {
   async loadQuestions() {
     try {
       const data = await getQuestions();
-      this.questions.set(data);
+
+      // Тук добавяме "филтър", който превръща likes в масив, ако идва като число
+      const sanitizedData = data.map((q: Question) => ({
+        ...q,
+        likes: Array.isArray(q.likes) ? q.likes : [],
+      }));
+
+      // Вече подаваме чистите данни
+      this.questions.set(sanitizedData);
     } catch (err) {
       console.error(err);
       this.error.set('Failed to load questions');
@@ -36,11 +43,10 @@ export class Answers implements OnInit {
       this.isLoading.set(false);
     }
   }
-
   async onDelete(id: string | undefined) {
     if (!id) return;
 
-    const questionToDelete = this.questions().find(q => q.id === id);
+    const questionToDelete = this.questions().find((q) => q.id === id);
     const currentUser = this.authService.currentUser();
 
     if (questionToDelete?.ownerId !== currentUser?.uid) {
@@ -54,28 +60,42 @@ export class Answers implements OnInit {
     try {
       await deleteQuestion(id);
 
-      this.questions.update(questions => questions.filter(q => q.id !== id));
+      this.questions.update((questions) => questions.filter((q) => q.id !== id));
     } catch (err) {
-      console.error("Error deleting:", err);
-      alert("Failed to delete question.");
+      console.error('Error deleting:', err);
+      alert('Failed to delete question.');
     }
   }
 
   async onLike(questionId: string | undefined) {
-    if (!questionId) return;
+    const currentUser = this.authService.currentUser();
+    if (!questionId || !currentUser) {
+      alert('Трябва да сте влезли в профила си, за да харесвате!');
+      return;
+    }
 
-    this.questions.update(questions =>
-      questions.map(question =>
-        question.id === questionId
-          ? { ...question, likes: (question.likes || 0) + 1 }
-          : question
-      )
+    const userId = currentUser.uid;
+
+    // Оптимистично обновяване на UI (веднага променяме картинката/броя)
+    this.questions.update((questions) =>
+      questions.map((q) => {
+        if (q.id === questionId) {
+          const hasLiked = q.likes?.includes(userId);
+          const newLikes = hasLiked
+            ? q.likes.filter((id) => id !== userId)
+            : [...(q.likes || []), userId];
+
+          return { ...q, likes: newLikes };
+        }
+        return q;
+      }),
     );
 
     try {
-      await likeQuestion(questionId);
+      await likeQuestion(questionId, userId);
     } catch (err) {
-      console.error("Error liking:", err);
+      console.error('Грешка при лайкване:', err);
+      this.loadQuestions();
     }
   }
 }

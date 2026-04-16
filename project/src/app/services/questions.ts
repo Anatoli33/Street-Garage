@@ -1,9 +1,18 @@
-import { getFirestore, collection, addDoc, getDocs, getDoc } from "firebase/firestore";
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  getDocs, 
+  doc, 
+  getDoc, 
+  updateDoc, 
+  deleteDoc, 
+  arrayRemove, 
+  arrayUnion,
+  serverTimestamp 
+} from "firebase/firestore";
 import { app } from "./firebase";
 import { Question } from "../interfaces/questions.interface.js";
-import { serverTimestamp } from "firebase/firestore";
-import { doc, deleteDoc } from "firebase/firestore";
-import { updateDoc, increment } from "firebase/firestore";
 
 const db = getFirestore(app);
 export async function getQuestions(): Promise<Question[]> {
@@ -44,12 +53,25 @@ export async function deleteQuestion(id: string) {
   const questionRef = doc(db, "questions", id);
   await deleteDoc(questionRef);
 }
-export async function likeQuestion(questionId: string) {
-  const questionRef = doc(db, "questions", questionId);
 
-  await updateDoc(questionRef, {
-    likes: increment(1)
-  });
+export async function likeQuestion(questionId: string, userId: string) {
+  const questionRef = doc(db, "questions", questionId);
+  const questionSnap = await getDoc(questionRef);
+
+  if (!questionSnap.exists()) return;
+
+  const data = questionSnap.data() as Question; 
+  const likes = data.likes || [];
+
+  if (likes.includes(userId)) {
+    await updateDoc(questionRef, {
+      likes: arrayRemove(userId)
+    });
+  } else {
+    await updateDoc(questionRef, {
+      likes: arrayUnion(userId)
+    });
+  }
 }
 
 export async function getQuestionById(id: string) {

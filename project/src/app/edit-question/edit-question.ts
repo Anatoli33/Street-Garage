@@ -22,7 +22,7 @@ export class EditQuestionComponent implements OnInit {
     title: '',
     description: '',
     tags: '',
-    likes: 0,
+    likes: [],
     createdAt: new Date(),
   };
 

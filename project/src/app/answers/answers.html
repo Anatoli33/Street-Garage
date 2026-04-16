@@ -34,24 +34,33 @@
 
       <div class="meta">
         <span>
-          {{ q.createdAt?.seconds 
-              ? (q.createdAt.seconds * 1000 | date:'short') 
-              : (q.createdAt | date:'short') }}
+          {{
+            q.createdAt?.seconds
+              ? (q.createdAt.seconds * 1000 | date: 'short')
+              : (q.createdAt | date: 'short')
+          }}
         </span>
       </div>
-      
-      <div class="buttons">
-  <a class="details-btn" (click)="onLike(q.id)">
-      Like❤️ {{ q.likes || 0 }}
-      </a>
-      <a class="details-btn" [routerLink]="['/questions', q.id]">Comment 💬</a>
-      <a class="details-btn" [routerLink]="['/questions', q.id]">
-      Details 👀
-      </a>
 
-        @if (authService.currentUser()?.uid === q.ownerId) {
+      <div class="buttons">
+        <a (click)="onLike(q.id)" class="like-btn" style="cursor: pointer">
+          @let userId = authService.currentUser()?.uid;
+
+          <span [class.active]="userId && q.likes.includes(userId)">
+            {{ userId && q.likes.includes(userId) ? '❤️' : '🤍' }}
+          </span>
+
+          {{ q.likes.length }}
+        </a>
+
+        <a class="details-btn" [routerLink]="['/questions', q.id]">Comment 💬</a>
+        <a class="details-btn" [routerLink]="['/questions', q.id]">Details 👀</a>
+
+        @if (userId === q.ownerId) {
           <a class="details-btn" [routerLink]="['/questions', q.id, 'edit']">Edit ✏️</a>
-          <a class="details-btn delete" (click)="onDelete(q.id)">Delete 🗑️</a>
+          <a class="details-btn delete" (click)="onDelete(q.id)" style="cursor: pointer"
+            >Delete 🗑️</a
+          >
         }
       </div>
     </div>
