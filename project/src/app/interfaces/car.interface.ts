@@ -8,4 +8,6 @@ export interface Car{
     tags?: string;
     createdAt: Date | any; 
     ownerId?: string;
+    likes?: number;
+    likedBy?: string[];
 }

@@ -12,7 +12,6 @@
 
       <h2>{{ car.brand }} {{ car.model }}</h2>
 
-
       @if (car.tags) {
         <div class="tags-container">
           @for (tag of car.tags.split ? car.tags.split(',') : car.tags; track $index) {
@@ -32,17 +31,16 @@
       </div>
 
       <div class="buttons">
-        <a class="details-btn" (click)="onLike(car.id)">
-        Like❤️ {{ car.likes || 0 }}
+      <a class="like-btn" [class.active]="car.likedBy?.includes(authService.currentUser()?.uid)" (click)="onLike(car.id)">
+  {{ car.likedBy?.includes(authService.currentUser()?.uid) ? '❤️' : '🤍' }} 
+  {{ car.likes || 0 }}
         </a>
         <a [routerLink]="['/cars', car.id]" class="details-btn">Comment 💬</a>
-        <a [routerLink]="['/cars', car.id]" class="details-btn">
-        Details 👀
-        </a>
-@if (authService.currentUser()?.uid === car.ownerId) {
-  <a [routerLink]="['/cars', car.id, 'edit']">Edit ✏️</a>
-  <a class="details-btn" (click)="onDelete(car.id!)">Delete 🗑️</a>
-}
+        <a [routerLink]="['/cars', car.id]" class="details-btn"> Details 👀 </a>
+        @if (authService.currentUser()?.uid === car.ownerId) {
+          <a [routerLink]="['/cars', car.id, 'edit']">Edit ✏️</a>
+          <a class="details-btn" (click)="onDelete(car.id!)">Delete 🗑️</a>
+        }
       </div>
     </div>
   }

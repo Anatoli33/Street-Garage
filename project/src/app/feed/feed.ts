@@ -1,6 +1,6 @@
 import { RouterLink } from '@angular/router';
 import { Component, signal } from '@angular/core';
-import { getCars, deleteCar, likeCar } from '../services/cars';
+import { getCars, deleteCar, toggleLikeCar } from '../services/cars';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../services/auth.service.js';
 
@@ -40,25 +40,42 @@ export class Feed {
 
 
 async onLike(carId: string) {
+  const user = this.authService.currentUser();
+  if (!user) {
+    alert('Моля, влезте в профила си, за да харесвате!');
+    return;
+  }
 
-  let currentState = false;
+  const userId = user.uid;
+  let wasLikedAlready = false;
+
 
   this.cars.update(cars =>
     cars.map(car => {
       if (car.id !== carId) return car;
 
-      currentState = car.liked ?? false;
+   
+      const likedBy = car.likedBy || [];
+      wasLikedAlready = likedBy.includes(userId);
+
+      const newLikedBy = wasLikedAlready
+        ? likedBy.filter((id: string) => id !== userId)
+        : [...likedBy, userId]; 
 
       return {
         ...car,
-        liked: !currentState,
-        likes: currentState
-          ? (car.likes || 1) - 1
-          : (car.likes || 0) + 1
+        likedBy: newLikedBy,
+        likes: wasLikedAlready ? (car.likes - 1) : (car.likes + 1)
       };
     })
   );
 
-  await likeCar(carId, currentState);
+  try {
+    await toggleLikeCar(carId, userId, wasLikedAlready);
+  } catch (err) {
+    console.error("Грешка при лайкване:", err);
+
+  }
 }
+
 }
