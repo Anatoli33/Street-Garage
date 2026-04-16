@@ -2,33 +2,63 @@
   <div class="details-container">
     <div class="details-card">
 
-      <!-- INFO -->
       <div class="info-section">
-
         <h1>{{ q.title }}</h1>
-
 
         <p class="description">
           {{ q.description }}
         </p>
 
-
-        <!-- BUTTONS -->
         <div class="actions">
-
           <button class="btn like">
             ❤️ Like {{ q.likes || 0 }}
           </button>
 
-
           <a class="btn back" routerLink="/answers">
             ⬅ Back
           </a>
-
         </div>
 
-      </div>
+        <div class="comments-section">
+          <h2>Comments</h2>
 
+          @if (authService.currentUser()) {
+            <div class="add-comment">
+              <textarea 
+                [(ngModel)]="commentText" 
+                placeholder="Write a comment..."
+              ></textarea>
+              <button (click)="addComment()" class="btn comment-btn" [disabled]="!commentText.trim()">
+                Post
+              </button>
+            </div>
+          } @else {
+            <p class="login-prompt">Please log in to leave a comment.</p>
+          }
+
+          <div class="comments-list">
+            @for (comment of comments(); track comment.id) {
+              @if (comment.text || comment.username) {
+                <div class="comment-box">
+                  <div class="comment-header">
+                    <span class="username">{{ comment.username || 'Anonymous' }}</span>
+                    <span class="date">
+                      {{ comment.createdAt | date: 'short' }}
+                    </span>
+                  </div>
+                  <p class="comment-text">
+                    {{ comment.text }}
+                  </p>
+                </div>
+              }
+            } @empty {
+              <p class="no-comments">No comments yet. Be the first to answer!</p>
+            }
+          </div>
+        </div>
+        </div>
     </div>
   </div>
+} @else {
+  <div class="loading">Loading question details...</div>
 }
