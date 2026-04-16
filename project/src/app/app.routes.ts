@@ -13,6 +13,7 @@ import { guestGuard } from './guards/auth.guard.js';
 import { authGuard } from './guards/auth.guard.js';
 import { EditCarComponent } from './edit/edit.js';
 import { Profile } from './profile/profile';
+import { EditQuestionComponent } from './edit-question/edit-question';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -40,6 +41,10 @@ export const routes: Routes = [
   {
   path: 'cars/:id/edit',
   component: EditCarComponent
+  },
+    {
+  path: 'questions/:id/edit',
+  component: EditQuestionComponent
   },
 
   { path: '**', component: NotFound },

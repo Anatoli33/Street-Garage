@@ -1,0 +1,44 @@
+<div class="details-container">
+  <div class="details-card">
+    <div class="info-section">
+      <h1>Edit Question</h1>
+
+      <form (ngSubmit)="onSubmit()" class="edit-form">
+        <div class="input-group">
+          <label>Title</label>
+          <input 
+            [(ngModel)]="question.title" 
+            name="title" 
+            placeholder="What is your question?" 
+            required 
+          />
+        </div>
+
+        <div class="input-group">
+          <label>Description</label>
+          <textarea 
+            [(ngModel)]="question.description" 
+            name="description" 
+            rows="8" 
+            placeholder="Detailed explanation..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="input-group">
+          <label>Tags (optional)</label>
+          <input 
+            [(ngModel)]="question.tags" 
+            name="tags" 
+            placeholder="e.g. angular, firebase, css" 
+          />
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn save-btn">Save Changes</button>
+          <a class="btn back" [routerLink]="['/answers']">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

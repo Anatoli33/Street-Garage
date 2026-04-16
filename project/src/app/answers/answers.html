@@ -47,7 +47,7 @@
       <a class="details-btn" [routerLink]="['/questions', q.id]">
       Details 👀
       </a>
-      <a class="details-btn">Edit  ✏️</a>
+      <a class="details-btn" [routerLink]="['/questions', q.id, 'edit']">Edit  ✏️</a>
       <a class="details-btn" (click)="onDelete(q.id)">Delete 🗑️</a>
       </div>
     </div>

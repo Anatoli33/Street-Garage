@@ -61,3 +61,7 @@ export async function getQuestionById(id: string) {
 
   return null;
 }
+export const updateQuestion = async (id: string, data: Partial<Question>) => {
+  const docRef = doc(db, 'questions', id);
+  return await updateDoc(docRef, data);
+};
