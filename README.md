@@ -38,6 +38,23 @@ Street Garage simulates a real automotive community platform where users can:
 * Structured Firebase integration
 
 ---
+## 🛡️ Security & Optimization
+
+* Custom Route Guards:
+
+* authGuard: Protects private routes from guests.
+
+* guestGuard: Prevents logged-in users from accessing Login/Register pages.
+
+* isOwnerGuard: A dynamic guard that prevents users from editing or deleting content they don't own.
+
+* Optimistic UI Updates: Used for the "Like" functionality to ensure an instant, lag-free user experience before the server responds.
+
+* Signal-based State Management: Leveraging Angular Signals for fine-grained reactivity and minimal change detection cycles.
+
+* Comprehensive Error Handling: Graceful handling of Firebase authentication errors (weak passwords, existing emails) and network failures with user-friendly feedback.
+
+---
 
 ## 🛠️ Tech Stack
 
