@@ -74,12 +74,15 @@ export async function likeQuestion(questionId: string, userId: string) {
   }
 }
 
-export async function getQuestionById(id: string) {
+export async function getQuestionById(id: string): Promise<Question | null> {
   const ref = doc(db, 'questions', id);
   const snap = await getDoc(ref);
 
   if (snap.exists()) {
-    return { id: snap.id, ...snap.data() };
+    return { 
+      id: snap.id, 
+      ...snap.data() 
+    } as Question;
   }
 
   return null;

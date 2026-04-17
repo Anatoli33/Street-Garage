@@ -2,11 +2,9 @@ import { Routes } from '@angular/router';
 import { Home } from './home/home.js';
 import { Feed } from './feed/feed.js';
 import { Login } from './login/login.js';
-// import { Details } from './details/details.js';
 import { Register } from './register/register.js';
 import { Create } from './create/create.js';
 import { NotFound } from './not-found/not-found.js';
-// import { carResolver } from './guards/car.resolver.js';
 import { Questions } from './questions/questions';
 import { Answers } from './answers/answers';
 import { guestGuard } from './guards/auth.guard.js';
@@ -14,6 +12,7 @@ import { authGuard } from './guards/auth.guard.js';
 import { EditCarComponent } from './edit/edit.js';
 import { Profile } from './profile/profile';
 import { EditQuestionComponent } from './edit-question/edit-question';
+import { isOwnerGuard } from './guards/auth.guard.js';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -40,11 +39,15 @@ export const routes: Routes = [
   { path: 'profile', component: Profile, canActivate: [authGuard] },
   {
   path: 'cars/:id/edit',
-  component: EditCarComponent
+  component: EditCarComponent,
+  canActivate: [isOwnerGuard],
+  data: { resourceType: 'cars' } 
   },
     {
   path: 'questions/:id/edit',
-  component: EditQuestionComponent
+  component: EditQuestionComponent, 
+  canActivate: [isOwnerGuard],
+  data: { resourceType: 'questions' } 
   },
 
   { path: '**', component: NotFound },
