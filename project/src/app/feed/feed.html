@@ -1,11 +1,10 @@
 <div class="feed">
   <a routerLink="/create" class="post-btn">Post Your Car</a>
-  <h1>Here see the cars</h1>
 
   @if (cars().length === 0) {
     <h1>No cars yet 🚗...</h1>
   }
-
+    <h1>Here see the cars</h1>
   @for (car of cars(); track car.id) {
     <div class="car-card">
       <img [src]="car.image" alt="car image" class="car-img" />

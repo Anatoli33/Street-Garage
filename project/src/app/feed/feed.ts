@@ -22,35 +22,36 @@ export class Feed {
       const data = await getCars();
       this.cars.set(data);
     } catch (err) {
-      console.error('Грешка при зареждане на данните:', err);
+      console.error('Error loading data:', err);
     } finally {
       this.isLoading.set(false);
     }
   }
 
   async onDelete(id: string) {
-    const confirmDelete = confirm('Сигурни ли сте, че искате да изтриете тази кола?');
+    const confirmDelete = confirm('Are you sure you want to delete this listing?');
     if (!confirmDelete) return;
 
     try {
       await deleteCar(id);
       this.cars.update(c => c.filter(x => x.id !== id));
     } catch (err) {
-      console.error('Грешка при изтриване:', err);
-      alert('Възникна грешка при опит за изтриване на обявата.');
+      console.error('Delete error:', err);
+      alert('An error occurred while trying to delete the listing.');
     }
   }
 
   async onLike(carId: string) {
     const user = this.authService.currentUser();
     if (!user) {
-      alert('Моля, влезте в профила си, за да харесвате!');
+      alert('Please log in to like this car!');
       return;
     }
 
     const userId = user.uid;
     let wasLikedAlready = false;
 
+    // Optimistic UI Update
     this.cars.update(cars =>
       cars.map(car => {
         if (car.id !== carId) return car;
@@ -73,8 +74,8 @@ export class Feed {
     try {
       await toggleLikeCar(carId, userId, wasLikedAlready);
     } catch (err) {
-      console.error("Грешка при лайкване:", err);
-      alert('Възникна грешка при обработката на харесването.');
+      console.error("Like error:", err);
+      alert('Something went wrong while processing your like.');
     }
   }
 }

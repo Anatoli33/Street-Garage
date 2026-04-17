@@ -52,7 +52,7 @@ export class EditCarComponent implements OnInit {
       this.cdr.detectChanges(); 
       
     } catch (error) {
-      console.error('Грешка при зареждане на колата:', error);
+      console.error('Error loading car:', error);
       this.router.navigate(['/']);
     }
   }
@@ -62,7 +62,8 @@ export class EditCarComponent implements OnInit {
       await updateCar(this.carId, this.car);
       this.router.navigate(['/feed']);
     } catch (error) {
-      console.error('Грешка при запис:', error);
+      console.error('Error updating car:', error);
+      alert('Failed to save changes. Please try again.');
     }
   }
 }

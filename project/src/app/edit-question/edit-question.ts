@@ -52,7 +52,7 @@ export class EditQuestionComponent implements OnInit {
 
       this.cdr.detectChanges();
     } catch (error) {
-      console.error('Грешка при зареждане:', error);
+      console.error('Error loading question:', error);
       this.router.navigate(['/answers']);
     }
   }
@@ -62,7 +62,8 @@ export class EditQuestionComponent implements OnInit {
       await updateQuestion(this.questionId, this.question);
       this.router.navigate(['/answers']);
     } catch (error) {
-      console.error('Грешка при обновяване:', error);
+      console.error('Error updating question:', error);
+      alert('Failed to save changes. Please try again.');
     }
   }
 }

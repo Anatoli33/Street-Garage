@@ -39,40 +39,49 @@ export class Register {
     return password === rePassword ? null : { mismatch: true };
   }
 
-  async onRegister() {
-    if (this.registerForm.invalid) {
-      this.registerForm.markAllAsTouched();
-      return;
-    }
-
-    const { username, email, password } = this.registerForm.value;
-
-    this.isLoading.set(true);
-    this.errorMessage.set(null);
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        Auth,
-        email,
-        password
-      );
-
-      await updateProfile(userCredential.user, {
-        displayName: username
-      });
-
-      this.router.navigate(['/']);
-
-    } catch (err: any) {
-      if (err.code === 'auth/email-already-in-use') {
-        this.errorMessage.set('This email is already registered.');
-      } else if (err.code === 'auth/weak-password') {
-        this.errorMessage.set('Password should be at least 6 characters.');
-      } else {
-        this.errorMessage.set('Something went wrong.');
-      }
-    } finally {
-      this.isLoading.set(false);
-    }
+async onRegister() {
+  if (this.registerForm.invalid) {
+    this.registerForm.markAllAsTouched();
+    return;
   }
+
+  const { username, email, password } = this.registerForm.value;
+
+  this.isLoading.set(true);
+  this.errorMessage.set(null);
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(Auth, email, password);
+    await updateProfile(userCredential.user, { displayName: username });
+    this.router.navigate(['/']);
+  } catch (err: any) {
+    console.error(err.code); 
+
+switch (err.code) {
+  case 'auth/email-already-in-use':
+    this.errorMessage.set('This email address is already in use.');
+    break;
+  case 'auth/invalid-email':
+    this.errorMessage.set('The email address is badly formatted.');
+    break;
+  case 'auth/operation-not-allowed':
+    this.errorMessage.set('Email/password accounts are not enabled. Please contact support.');
+    break;
+  case 'auth/network-request-failed':
+    this.errorMessage.set('Network error. Please check your internet connection.');
+    break;
+  case 'auth/too-many-requests':
+    this.errorMessage.set('Too many attempts. Please try again later.');
+    break;
+  case 'auth/internal-error':
+    this.errorMessage.set('An internal server error occurred. Please try again.');
+    break;
+  default:
+    this.errorMessage.set('An unexpected error occurred. Please try again.');
+    break;
+}
+  } finally {
+    this.isLoading.set(false);
+  }
+}
 }

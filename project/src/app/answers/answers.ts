@@ -34,8 +34,8 @@ export class Answers implements OnInit {
 
       this.questions.set(sanitizedData);
     } catch (err) {
-      console.error(err);
-      this.error.set('Грешка при зареждане на въпросите');
+      console.error('Error fetching questions:', err);
+      this.error.set('Failed to load questions. Please try again later.');
     } finally {
       this.isLoading.set(false);
     }
@@ -48,32 +48,31 @@ export class Answers implements OnInit {
     const currentUser = this.authService.currentUser();
 
     if (questionToDelete?.ownerId !== currentUser?.uid) {
-      alert("Нямате разрешение да изтриете този въпрос!");
+      alert("You don't have permission to delete this question!");
       return;
     }
 
-    const confirmDelete = confirm('Сигурни ли сте, че искате да изтриете този въпрос?');
+    const confirmDelete = confirm('Are you sure you want to delete this question?');
     if (!confirmDelete) return;
 
     try {
       await deleteQuestion(id);
       this.questions.update((questions) => questions.filter((q) => q.id !== id));
     } catch (err) {
-      console.error('Error deleting:', err);
-      alert('Възникна грешка при опит за изтриване на въпроса.');
+      console.error('Delete error:', err);
+      alert('An error occurred while trying to delete the question.');
     }
   }
 
   async onLike(questionId: string | undefined) {
     const currentUser = this.authService.currentUser();
     if (!questionId || !currentUser) {
-      alert('Моля, влезте в профила си, за да харесвате!');
+      alert('Please log in to like this question!');
       return;
     }
 
     const userId = currentUser.uid;
 
-  
     this.questions.update((questions) =>
       questions.map((q) => {
         if (q.id === questionId) {
@@ -91,8 +90,8 @@ export class Answers implements OnInit {
     try {
       await likeQuestion(questionId, userId);
     } catch (err) {
-      console.error('Грешка при лайкване:', err);
-      alert('Възникна грешка при отразяване на харесването.');
+      console.error('Like operation error:', err);
+      alert('Could not update your like. Please try again.');
       this.loadQuestions(); 
     }
   }

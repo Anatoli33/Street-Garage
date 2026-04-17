@@ -4,14 +4,24 @@
 
     @if (errorMessage()) {
       <div class="alert-error">
-        {{ errorMessage() }}
+        <span>{{ errorMessage() }}</span>
+        <button type="button" class="close-btn" (click)="errorMessage.set(null)" aria-label="Close error">
+          &times;
+        </button>
       </div>
     }
 
     <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      
       <div class="form-group">
         <label for="username">Username</label>
-        <input id="username" type="text" formControlName="username" placeholder="Enter username" />
+        <input 
+          id="username" 
+          type="text" 
+          formControlName="username" 
+          placeholder="Enter username"
+          [class.input-error]="registerForm.get('username')?.touched && registerForm.get('username')?.invalid" 
+        />
         @if (registerForm.get('username')?.touched && registerForm.get('username')?.invalid) {
           <small class="error">Username must be at least 3 characters.</small>
         }
@@ -19,20 +29,44 @@
 
       <div class="form-group">
         <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" placeholder="Enter email" />
+        <input 
+          id="email" 
+          type="email" 
+          formControlName="email" 
+          placeholder="Enter email"
+          [class.input-error]="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
+        />
         @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']) {
           <small class="error">Please enter a valid email address.</small>
+        }
+        @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']) {
+          <small class="error">Email is required.</small>
         }
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" placeholder="Enter password" />
+        <input 
+          id="password" 
+          type="password" 
+          formControlName="password" 
+          placeholder="Enter password"
+          [class.input-error]="registerForm.get('password')?.touched && registerForm.get('password')?.invalid"
+        />
+        @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
+          <small class="error">Password must be at least 6 characters.</small>
+        }
       </div>
 
       <div class="form-group">
         <label for="rePassword">Confirm Password</label>
-        <input id="rePassword" type="password" formControlName="rePassword" placeholder="Repeat password" />
+        <input 
+          id="rePassword" 
+          type="password" 
+          formControlName="rePassword" 
+          placeholder="Repeat password"
+          [class.input-error]="registerForm.hasError('mismatch') && registerForm.get('rePassword')?.touched"
+        />
         @if (registerForm.hasError('mismatch') && registerForm.get('rePassword')?.touched) {
           <small class="error">Passwords do not match.</small>
         }

@@ -42,17 +42,12 @@ export class Login {
     try {
       await signInWithEmailAndPassword(Auth, email, password);
 
-      this.router.navigate(['/']); // redirect
+      this.router.navigate(['/']); 
 
     } catch (err: any) {
 
-      if (err.code === 'auth/user-not-found') {
-        this.errorMessage.set('No user found with this email.');
-      } else if (err.code === 'auth/wrong-password') {
-        this.errorMessage.set('Incorrect password.');
-      } else {
         this.errorMessage.set('Login failed. Try again.');
-      }
+
 
     } finally {
       this.isLoading.set(false);
