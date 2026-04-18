@@ -6,7 +6,7 @@
   height: 100vh;
   text-align: center;
   background-color: #f3f4f6;
-  color: #1e3a8a; /* dark blue text */
+  color: #1e3a8a;
   padding: 20px;
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
@@ -29,13 +29,13 @@
 .not-found p {
   font-size: 1.2rem;
   margin-bottom: 30px;
-  color: #374151; /* dark gray text for readability */
+  color: #374151; 
 }
 
 /* Go Home button */
 .btn-home {
   padding: 12px 30px;
-  background-color: #3b82f6; /* main blue */
+  background-color: #3b82f6; 
   color: white;
   text-decoration: none;
   border-radius: 6px;
@@ -45,6 +45,6 @@
 
 /* Hover effect for button */
 .btn-home:hover {
-  background-color: #2563eb; /* slightly darker blue */
+  background-color: #2563eb; 
   transform: scale(1.05);
 }

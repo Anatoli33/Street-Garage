@@ -5,7 +5,6 @@
       <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
       <a routerLink="/feed" routerLinkActive="active-link">Explore</a>
       <a routerLink="/answers" routerLinkActive="active-link">Q&A</a>
-      <!-- <a routerLink="" routerLinkActive="active-link">Profile</a> -->
   @if (!authService.currentUser()) {
     <a routerLink="/login" routerLinkActive="active-link">Login</a>
     <a routerLink="/register" routerLinkActive="active-link">Register</a>

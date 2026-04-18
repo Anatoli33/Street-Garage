@@ -43,7 +43,7 @@ export class Profile implements OnInit {
       this.allCars.set(carsData);
       this.allQuestions.set(questionsData);
     } catch (error) {
-      console.error("Грешка при зареждане на профила:", error);
+      console.error("Error:", error);
     } finally {
       this.isLoading.set(false);
     }

@@ -7,7 +7,6 @@ import { Car } from '../interfaces/car.interface';
 
 @Component({
   selector: 'app-feed',
-  standalone: true,
   imports: [RouterLink, DatePipe],
   templateUrl: './feed.html',
   styleUrl: './feed.css',

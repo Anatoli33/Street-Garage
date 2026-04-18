@@ -18,7 +18,6 @@ import { Comment } from '../interfaces/comment.interface.js';
 
 @Component({
   selector: 'app-question-details',
-  standalone: true,
   imports: [RouterModule, FormsModule, DatePipe],
   styleUrl: './details-answers.css',
   templateUrl: './details-answers.html',

@@ -8,7 +8,6 @@ import { AuthService } from '../services/auth.service.js';
 
 @Component({
   selector: 'app-answers',
-  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './answers.html',
   styleUrl: './answers.css',
