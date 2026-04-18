@@ -39,28 +39,30 @@ async onLogin() {
   this.isLoading.set(true);
   this.errorMessage.set(null);
 
-  try {
-    await signInWithEmailAndPassword(Auth, email, password);
-    this.router.navigate(['/']); 
-  } catch (err: any) {
-    console.error('Login error code:', err.code);
+try {
+  await signInWithEmailAndPassword(Auth, email, password);
+  this.router.navigate(['/']); 
+} catch (err: unknown) {
+  const errorCode = (err as { code?: string }).code;
 
-    switch (err.code) {
-      case 'auth/invalid-credential':
-        this.errorMessage.set('Invalid email or password. Please try again.');
-        break;
-      case 'auth/too-many-requests':
-        this.errorMessage.set('Access to this account has been temporarily disabled due to many failed login attempts.');
-        break;
-      case 'auth/network-request-failed':
-        this.errorMessage.set('Network error. Please check your internet connection.');
-        break;
-      default:
-        this.errorMessage.set('An unexpected error occurred. Please try again.');
-        break;
-    }
-  } finally {
-    this.isLoading.set(false);
+  console.error('Login error code:', errorCode);
+
+  switch (errorCode) {
+    case 'auth/invalid-credential':
+      this.errorMessage.set('Invalid email or password. Please try again.');
+      break;
+    case 'auth/too-many-requests':
+      this.errorMessage.set('Access to this account has been temporarily disabled due to many failed login attempts.');
+      break;
+    case 'auth/network-request-failed':
+      this.errorMessage.set('Network error. Please check your internet connection.');
+      break;
+    default:
+      this.errorMessage.set('An unexpected error occurred. Please try again.');
+      break;
   }
+} finally {
+  this.isLoading.set(false);
+}
 }
 }

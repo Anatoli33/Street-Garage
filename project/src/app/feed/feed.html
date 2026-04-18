@@ -3,17 +3,19 @@
 
   @if (cars().length === 0) {
     <h1>No cars yet 🚗...</h1>
-  }
+  } @else {
     <h1>Here see the cars</h1>
+  }
+
   @for (car of cars(); track car.id) {
     <div class="car-card">
       <img [src]="car.image" alt="car image" class="car-img" />
 
       <h2>{{ car.brand }} {{ car.model }}</h2>
 
-      @if (car.tags) {
+      @if (car.tags && car.tags.length > 0) {
         <div class="tags-container">
-          @for (tag of car.tags.split ? car.tags.split(',') : car.tags; track $index) {
+          @for (tag of car.tags; track $index) {
             <span class="tag">#{{ tag.trim() }}</span>
           }
         </div>
@@ -21,22 +23,24 @@
 
       <div class="meta">
         <span>
-          {{
-            car.createdAt?.seconds
-              ? (car.createdAt.seconds * 1000 | date: 'short')
-              : (car.createdAt | date: 'short')
-          }}
+          {{ car.createdAt | date: 'short' }}
         </span>
       </div>
 
       <div class="buttons">
-      <a class="like-btn" [class.active]="car.likedBy?.includes(authService.currentUser()?.uid)" (click)="onLike(car.id)">
-  {{ car.likedBy?.includes(authService.currentUser()?.uid) ? '❤️' : '🤍' }} 
-  {{ car.likes || 0 }}
+        @let currentUser = authService.currentUser();
+        
+        <a class="like-btn" 
+           [class.active]="currentUser && car.likedBy?.includes(currentUser.uid)" 
+           (click)="onLike(car.id!)">
+          {{ currentUser && car.likedBy?.includes(currentUser.uid) ? '❤️' : '🤍' }} 
+          {{ car.likes || 0 }}
         </a>
+
         <a [routerLink]="['/cars', car.id]" class="details-btn">Comment 💬</a>
         <a [routerLink]="['/cars', car.id]" class="details-btn"> Details 👀 </a>
-        @if (authService.currentUser()?.uid === car.ownerId) {
+
+        @if (currentUser && currentUser.uid === car.ownerId) {
           <a [routerLink]="['/cars', car.id, 'edit']">Edit ✏️</a>
           <a class="details-btn" (click)="onDelete(car.id!)">Delete 🗑️</a>
         }

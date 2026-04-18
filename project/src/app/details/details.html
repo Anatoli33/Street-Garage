@@ -11,29 +11,14 @@
         <div class="meta">
           <span>Year: {{ c.year }}</span>
 
-          <span>
-            {{
-              c.createdAt?.seconds
-                ? (c.createdAt.seconds * 1000 | date: 'medium')
-                : (c.createdAt | date: 'medium')
-            }}
-          </span>
+          <span>{{ c.createdAt | date: 'medium' }}</span>
         </div>
 
         <p class="description">
           {{ c.description }}
         </p>
 
-        @if (c.tags) {
-          <div class="tags">
-            @for (tag of c.tags.split ? c.tags.split(',') : c.tags; track $index) {
-              <span class="tag">#{{ tag.trim() }}</span>
-            }
-          </div>
-        }
-
         <div class="actions">
-
           <a class="btn back" routerLink="/feed"> ⬅ Back </a>
         </div>
 

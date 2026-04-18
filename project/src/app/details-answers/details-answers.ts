@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -13,6 +13,8 @@ import {
   onSnapshot, 
   Timestamp 
 } from 'firebase/firestore';
+import { Question } from '../interfaces/questions.interface';
+import { Comment } from '../interfaces/comment.interface.js';
 
 @Component({
   selector: 'app-question-details',
@@ -23,16 +25,15 @@ import {
 })
 export class DetailsAnswersComponent implements OnInit {
   private route = inject(ActivatedRoute);
-  private cdr = inject(ChangeDetectorRef);
   public authService = inject(AuthService);
 
-  question = signal<any>(null);
+  question = signal<Question | null>(null);
   questionId: string = '';
   
-  commentText = '';
-  comments = signal<any[]>([]);
+  commentText: string = '';
+  comments = signal<Comment[]>([]);
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
@@ -40,55 +41,60 @@ export class DetailsAnswersComponent implements OnInit {
       
       try {
         const data = await getQuestionById(id);
-        this.question.set(data);
-        this.loadComments(id);
-        this.cdr.detectChanges();
+        if (data) {
+
+          this.question.set(data as Question);
+          this.loadComments(id);
+        }
       } catch (error) {
-        console.error("Грешка при зареждане на въпроса:", error);
+
+        console.error("Error loading question:", error);
       }
     }
   }
 
-  loadComments(id: string) {
+  loadComments(id: string): void {
     const q = query(
       collection(db, `questions/${id}/comments`),
       orderBy('createdAt', 'desc')
     );
 
     onSnapshot(q, (snapshot) => {
-      const loadedComments = snapshot.docs.map(doc => {
-        const data = doc.data();
+      const loadedComments: Comment[] = snapshot.docs.map(doc => {
+        const data = doc.data() as Comment;
+        
+        const rawDate = data.createdAt;
+        const normalizedDate = rawDate instanceof Timestamp ? rawDate.toDate() : new Date();
+
         return {
           id: doc.id,
           ...data,
-          createdAt: data['createdAt'] instanceof Timestamp ? data['createdAt'].toDate() : new Date()
+          createdAt: normalizedDate
         };
       });
 
       this.comments.set(loadedComments);
-      
-
-      this.cdr.detectChanges();
     });
   }
 
-  async addComment() {
+  async addComment(): Promise<void> {
     if (!this.commentText.trim()) return;
 
     const user = this.authService.currentUser();
     if (!user) return;
 
     try {
-      await addDoc(collection(db, `questions/${this.questionId}/comments`), {
+      const newComment: Omit<Comment, 'id'> = {
         text: this.commentText,
         userId: user.uid,
         username: user.displayName || user.email?.split('@')[0] || 'Anonymous',
         createdAt: new Date()
-      });
+      };
 
+      await addDoc(collection(db, `questions/${this.questionId}/comments`), newComment);
       this.commentText = '';
     } catch (error) {
-      console.error("Грешка при добавяне на коментар:", error);
+      console.error("Error adding comment:", error);
     }
   }
 }

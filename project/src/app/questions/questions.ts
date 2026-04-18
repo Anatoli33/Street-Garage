@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-questions',
-  standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './questions.html',
   styleUrl: './questions.css',

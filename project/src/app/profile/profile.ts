@@ -9,7 +9,6 @@ import { Question } from '../interfaces/questions.interface.js';
 
 @Component({
   selector: 'app-profile',
-  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
