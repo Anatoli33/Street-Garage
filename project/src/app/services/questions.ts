@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { app } from "./firebase";
 import { Question } from "../interfaces/questions.interface.js";
+import { from, map, Observable } from 'rxjs';
 
 const db = getFirestore(app);
 export async function getQuestions(): Promise<Question[]> {
@@ -91,3 +92,18 @@ export const updateQuestion = async (id: string, data: Partial<Question>) => {
   const docRef = doc(db, 'questions', id);
   return await updateDoc(docRef, data);
 };
+export function getQuestionsRxJS(): Observable<Question[]> {
+  const questionsCollection = collection(db, "questions");
+  
+  return from(getDocs(questionsCollection)).pipe(
+    map(snapshot => snapshot.docs.map(doc => {
+      const data = doc.data() as Question;
+      return {
+        ...data,
+        id: doc.id,
+        likes: Array.isArray(data.likes) ? data.likes : [],
+        createdAt: (data.createdAt as any)?.toDate ? (data.createdAt as any).toDate() : data.createdAt
+      } as Question;
+    }))
+  );
+}

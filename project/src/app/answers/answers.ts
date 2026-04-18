@@ -1,49 +1,49 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
-import { deleteQuestion, getQuestions } from '../services/questions.js';
+import { Component, OnInit, signal, inject, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Question } from '../interfaces/questions.interface.js';
 import { RouterModule } from '@angular/router';
-import { likeQuestion } from '../services/questions.js';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { deleteQuestion, getQuestionsRxJS, likeQuestion } from '../services/questions.js';
+import { Question } from '../interfaces/questions.interface.js';
 import { AuthService } from '../services/auth.service.js';
 
 @Component({
   selector: 'app-answers',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './answers.html',
   styleUrl: './answers.css',
 })
 export class Answers implements OnInit {
   public authService = inject(AuthService);
+  private destroyRef = inject(DestroyRef);
 
   questions = signal<Question[]>([]);
   isLoading = signal(true);
   error = signal<string | null>(null);
 
-  async ngOnInit() {
-    await this.loadQuestions();
+  ngOnInit(): void {
+    this.loadQuestions();
   }
 
-async loadQuestions() {
-  try {
-    const data = await getQuestions();
-    
-    const sanitizedData = data.map((q: any) => ({
-      ...q,
+  loadQuestions(): void {
+    this.isLoading.set(true);
 
-      likes: Array.isArray(q.likes) ? q.likes : [],
-
-      createdAt: q.createdAt?.toDate ? q.createdAt.toDate() : q.createdAt
-    }));
-
-    this.questions.set(sanitizedData);
-  } catch (err) {
-    this.error.set('Loading error.');
-  } finally {
-    this.isLoading.set(false);
+    getQuestionsRxJS()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (data: Question[]) => {
+          this.questions.set(data);
+          this.isLoading.set(false);
+        },
+        error: (err: Error) => {
+          console.error('RxJS Error:', err);
+          this.error.set('Failed to load questions. Please try again later.');
+          this.isLoading.set(false);
+        }
+      });
   }
-}
 
-  async onDelete(id: string | undefined) {
+  async onDelete(id: string | undefined): Promise<void> {
     if (!id) return;
 
     const questionToDelete = this.questions().find((q) => q.id === id);
@@ -54,19 +54,17 @@ async loadQuestions() {
       return;
     }
 
-    const confirmDelete = confirm('Are you sure you want to delete this question?');
-    if (!confirmDelete) return;
+    if (!confirm('Are you sure you want to delete this question?')) return;
 
     try {
       await deleteQuestion(id);
-      this.questions.update((questions) => questions.filter((q) => q.id !== id));
+      this.questions.update((qs) => qs.filter((q) => q.id !== id));
     } catch (err) {
-      console.error('Delete error:', err);
-      alert('An error occurred while trying to delete the question.');
+      alert('An error occurred while trying to delete.');
     }
   }
 
-  async onLike(questionId: string | undefined) {
+  async onLike(questionId: string | undefined): Promise<void> {
     const currentUser = this.authService.currentUser();
     if (!questionId || !currentUser) {
       alert('Please log in to like this question!');
@@ -75,26 +73,26 @@ async loadQuestions() {
 
     const userId = currentUser.uid;
 
-    this.questions.update((questions) =>
-      questions.map((q) => {
+    this.questions.update((qs) =>
+      qs.map((q) => {
         if (q.id === questionId) {
-          const hasLiked = q.likes?.includes(userId);
+          const likes = Array.isArray(q.likes) ? q.likes : [];
+          const hasLiked = likes.includes(userId);
           const newLikes = hasLiked
-            ? q.likes.filter((id) => id !== userId)
-            : [...(q.likes || []), userId];
+            ? likes.filter((id) => id !== userId)
+            : [...likes, userId];
 
           return { ...q, likes: newLikes };
         }
         return q;
-      }),
+      })
     );
 
     try {
       await likeQuestion(questionId, userId);
     } catch (err) {
-      console.error('Like operation error:', err);
-      alert('Could not update your like. Please try again.');
-      this.loadQuestions(); 
+      alert('Could not update like.');
+      this.loadQuestions();
     }
   }
 }
