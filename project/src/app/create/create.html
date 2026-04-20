@@ -3,40 +3,71 @@
     <h1>Add New Car</h1>
 
     <form [formGroup]="createForm" (ngSubmit)="onCreate()">
+      
       <div class="form-group">
         <label for="brand">Brand</label>
         <input type="text" id="brand" formControlName="brand" placeholder="BMW, Audi...">
+        
+        @if (createForm.get('brand')?.invalid && createForm.get('brand')?.touched) {
+          <div class="error-msg">
+            @if (createForm.get('brand')?.errors?.['required']) { <span>Brand is required.</span> }
+            @if (createForm.get('brand')?.errors?.['minlength']) { <span>Minimum 2 characters.</span> }
+          </div>
+        }
       </div>
 
       <div class="form-group">
         <label for="model">Model</label>
         <input type="text" id="model" formControlName="model" placeholder="M3, A4...">
+        
+        @if (createForm.get('model')?.invalid && createForm.get('model')?.touched) {
+          <div class="error-msg">
+            <span>Please enter a valid model.</span>
+          </div>
+        }
       </div>
+
       <div class="form-group">
         <label for="year">Year</label>
         <input type="number" id="year" formControlName="year" placeholder="2020">
+        
+        @if (createForm.get('year')?.invalid && createForm.get('year')?.touched) {
+          <div class="error-msg">
+            @if (createForm.get('year')?.errors?.['required']) { <span>Year is required.</span> }
+            @if (createForm.get('year')?.errors?.['min']) { <span>Year must be after 1900.</span> }
+            @if (createForm.get('year')?.errors?.['max']) { <span>Year cannot be in the future.</span> }
+          </div>
+        }
       </div>
 
       <div class="form-group">
         <label for="image">Image URL</label>
         <input type="text" id="image" formControlName="image" placeholder="https://...">
+        
+        @if (createForm.get('image')?.invalid && createForm.get('image')?.touched) {
+          <div class="error-msg">
+            <span>Please provide a valid image URL (http/https).</span>
+          </div>
+        }
       </div>
 
       <div class="form-group">
         <label for="description">Description</label>
         <textarea id="description" formControlName="description" rows="6" placeholder="Car details..."></textarea>
-      </div>
-       <div class="form-group">
-        <label for="tags">Tags</label>
-        <input
-          type="text"
-          id="tags"
-          formControlName="tags"
-          placeholder="e.g., sports, electric, luxury"
-        />
+        
+        @if (createForm.get('description')?.invalid && createForm.get('description')?.touched) {
+          <div class="error-msg">
+            <span>Description must be at least 10 characters long.</span>
+          </div>
+        }
       </div>
 
-      <button type="submit" class="btn-submit">Create Car</button>
+      <div class="form-group">
+        <label for="tags">Tags</label>
+        <input type="text" id="tags" formControlName="tags" placeholder="e.g., sports, electric, luxury" />
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="createForm.invalid">Create Car</button>
     </form>
   </div>
 </section>
