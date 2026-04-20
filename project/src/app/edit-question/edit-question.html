@@ -3,39 +3,54 @@
     <div class="info-section">
       <h1>Edit Question</h1>
 
-      <form (ngSubmit)="onSubmit()" class="edit-form">
+      <form [formGroup]="questionForm" (ngSubmit)="onSubmit()" class="edit-form">
+        
         <div class="input-group">
-          <label>Title</label>
+          <label for="title">Title</label>
           <input 
-            [(ngModel)]="question.title" 
-            name="title" 
+            type="text"
+            id="title"
+            formControlName="title" 
             placeholder="What is your question?" 
-            required 
           />
+          @if (questionForm.get('title')?.invalid && questionForm.get('title')?.touched) {
+            <div class="error-msg">
+              @if (questionForm.get('title')?.errors?.['required']) { <span>Title is required.</span> }
+              @if (questionForm.get('title')?.errors?.['minlength']) { <span>Title must be at least 5 characters.</span> }
+            </div>
+          }
         </div>
 
         <div class="input-group">
-          <label>Description</label>
+          <label for="description">Description</label>
           <textarea 
-            [(ngModel)]="question.description" 
-            name="description" 
+            id="description"
+            formControlName="description" 
             rows="8" 
             placeholder="Detailed explanation..."
-            required
           ></textarea>
+          @if (questionForm.get('description')?.invalid && questionForm.get('description')?.touched) {
+            <div class="error-msg">
+              @if (questionForm.get('description')?.errors?.['required']) { <span>Description is required.</span> }
+              @if (questionForm.get('description')?.errors?.['minlength']) { <span>Description must be at least 10 characters.</span> }
+            </div>
+          }
         </div>
 
         <div class="input-group">
-          <label>Tags (optional)</label>
+          <label for="tags">Tags (optional)</label>
           <input 
-            [(ngModel)]="question.tags" 
-            name="tags" 
+            type="text"
+            id="tags"
+            formControlName="tags" 
             placeholder="e.g. angular, firebase, css" 
           />
         </div>
 
         <div class="actions">
-          <button type="submit" class="btn save-btn">Save Changes</button>
+          <button type="submit" class="btn save-btn" [disabled]="questionForm.invalid">
+            Save Changes
+          </button>
           <a class="btn back" [routerLink]="['/answers']">Cancel</a>
         </div>
       </form>

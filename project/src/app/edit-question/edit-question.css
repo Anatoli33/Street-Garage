@@ -9,11 +9,11 @@
 
 /* CARD */
 .details-card {
-  background: #3b82f6; /* Синият фон от останалите страници */
+  background: #3b82f6; 
   color: white;
   border-radius: 18px;
   padding: 30px;
-  max-width: 600px; /* По-тясно за форма за редактиране */
+  max-width: 600px; 
   width: 100%;
   box-shadow: 0 15px 30px rgba(0,0,0,0.3);
 }
@@ -54,7 +54,7 @@ input, textarea {
   color: #1e3a8a;
   transition: all 0.2s ease;
   width: 100%;
-  box-sizing: border-box; /* Важно, за да не излизат от контейнера */
+  box-sizing: border-box; 
 }
 
 input:focus, textarea:focus {
@@ -71,7 +71,7 @@ input:focus, textarea:focus {
 }
 
 .btn {
-  flex: 1; /* Бутоните да са с еднаква ширина */
+  flex: 1; 
   padding: 12px;
   border: none;
   border-radius: 10px;
@@ -108,6 +108,24 @@ input:focus, textarea:focus {
 
 .btn:active {
   transform: scale(0.98);
+}
+.error-msg {
+  color: #e74c3c; 
+  font-size: 0.8rem;
+  margin-top: 4px;
+  display: block; 
+}
+
+
+input.ng-invalid.ng-touched, 
+textarea.ng-invalid.ng-touched {
+  border-color: #e74c3c !important;
+}
+.save-btn:disabled {
+  opacity: 0.6;
+  background-color: #bdc3c7;
+  color: #172554;
+  cursor: not-allowed;
 }
 
 /* RESPONSIVE */

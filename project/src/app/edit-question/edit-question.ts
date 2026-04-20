@@ -1,12 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { getQuestionById, updateQuestion } from '../services/questions';
-import { Question } from '../interfaces/questions.interface.js';
 
 @Component({
   selector: 'app-edit-question',
-  imports: [FormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './edit-question.html',
   styleUrl: './edit-question.css',
 })
@@ -14,17 +13,19 @@ export class EditQuestionComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private fb = inject(FormBuilder);
 
   questionId!: string;
+  questionForm: FormGroup;
 
-  question: Question = {
-    id: '',
-    title: '',
-    description: '',
-    tags: '',
-    likes: [],
-    createdAt: new Date(),
-  };
+  constructor() {
+
+    this.questionForm = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(5)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      tags: [''],
+    });
+  }
 
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -44,11 +45,12 @@ export class EditQuestionComponent implements OnInit {
         return;
       }
 
-      this.question = {
-        ...this.question,
-        ...data,
-        id: id,
-      } as Question;
+
+      this.questionForm.patchValue({
+        title: data.title,
+        description: data.description,
+        tags: data.tags 
+      });
 
       this.cdr.detectChanges();
     } catch (error) {
@@ -58,8 +60,14 @@ export class EditQuestionComponent implements OnInit {
   }
 
   async onSubmit() {
+    if (this.questionForm.invalid) {
+      this.questionForm.markAllAsTouched();
+      return;
+    }
+
     try {
-      await updateQuestion(this.questionId, this.question);
+      const updatedData = this.questionForm.value;
+      await updateQuestion(this.questionId, updatedData);
       this.router.navigate(['/answers']);
     } catch (error) {
       console.error('Error updating question:', error);
